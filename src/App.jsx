@@ -15,7 +15,7 @@ function App() {
   localData = localStorage.getItem('cart');
   let D = JSON.parse(localData);
 
-  const [cart, setCart] = useState(D);
+  const [cart, setCart] = useState({});
 
   function handleAddtoCart(productId, count) {
     const oldCount = cart[productId] || 0;
