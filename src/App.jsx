@@ -11,9 +11,9 @@ import CartPage from './CartPage';
 let data = [];
 
 function App() {
-  let localData;
-  localData = localStorage.getItem('cart');
-  let D = JSON.parse(localData);
+  //   let localData;
+  //   localData = localStorage.getItem('cart');
+  //   let D = JSON.parse(localData);
 
   const [cart, setCart] = useState({});
 
