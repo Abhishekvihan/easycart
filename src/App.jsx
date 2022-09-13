@@ -11,8 +11,6 @@ import CartPage from './CartPage';
 let data = [];
 
 function App() {
-  let storedData;
-
   let localData;
   localData = localStorage.getItem('cart');
   let D = JSON.parse(localData);
@@ -25,7 +23,7 @@ function App() {
     setCart(newCart);
     data = { ...newCart };
     const cartString = JSON.stringify(newCart);
-    storedData = localStorage.setItem('cart', cartString);
+    localStorage.setItem('cart', cartString);
   }
 
   const totalCount = Object.keys(cart).reduce(function (previous, current) {
