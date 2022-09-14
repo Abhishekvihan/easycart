@@ -11,11 +11,11 @@ import CartPage from './CartPage';
 let data = [];
 
 function App() {
-  //   let localData;
-  //   localData = localStorage.getItem('cart');
-  //   let D = JSON.parse(localData);
+  let localData;
+  localData = localStorage.getItem('cart');
+  let D = JSON.parse(localData);
 
-  const [cart, setCart] = useState({});
+  const [cart, setCart] = useState(D);
 
   function handleAddtoCart(productId, count) {
     const oldCount = cart[productId] || 0;
