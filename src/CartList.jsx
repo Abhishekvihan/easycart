@@ -7,7 +7,7 @@ import NoProduct from './NoProduct';
 import EmptyCart from './EmptyCart';
 import Loading from './Loading';
 
-function CartList({ field, products }) {
+function CartList({ field }) {
   const keys = Object.keys(field);
   const [loading, setLoading] = useState(true);
   const [productList, setproductList] = useState([]);
@@ -55,7 +55,7 @@ function CartList({ field, products }) {
             id={item.id}
             key={item.id}
             price={item.price}
-            quantity={field.value}
+            quantity={field}
           />
         ))}
       <div className="flex justify-between py-2 border border-gray-200 rounded-md borde">

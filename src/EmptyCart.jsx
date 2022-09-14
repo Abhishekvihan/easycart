@@ -15,7 +15,7 @@ function EmptyCart() {
         </p>
         <div className="pb-5 ">
           <Link to="/">
-            <button className="px-2 py-1 text-xl text-white bg-indigo-500 rounded-md md:px-4 md:py-2 md:text-3xl">
+            <button className="px-2 py-1 text-xl text-white bg-indigo-500 rounded-md shadow-md md:px-4 md:py-2 md:text-3xl">
               Back to shopping
             </button>
           </Link>
