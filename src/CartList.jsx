@@ -3,8 +3,13 @@ import { Link } from 'react-router-dom';
 // import { getProductData, getProductList } from './api';
 import CartRow from './CartRow';
 import { BsArrowLeft } from 'react-icons/bs';
+import NoProduct from './NoProduct';
 
 function CartList({ products }) {
+  if (products.length === 0) {
+    console.log(products);
+    return <NoProduct />;
+  }
   return (
     <div className="max-w-6xl p-10 mx-auto">
       <Link className="pb-5" to="/">

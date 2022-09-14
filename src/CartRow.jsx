@@ -1,6 +1,8 @@
 import React from 'react';
+import { useState } from 'react';
 
-function CartRow({ src, title, price, quantity }) {
+function CartRow({ src, title, price }) {
+  const [quantity, setQuantity] = useState(2);
   return (
     <div className="max-w-6xl mx-auto">
       <div className="border border-gray-100">
@@ -15,10 +17,13 @@ function CartRow({ src, title, price, quantity }) {
             <input
               className="w-8 text-center border border-gray-200 outline-0"
               type="number"
-              value={2}
+              value={quantity}
+              onChange={(event) => {
+                setQuantity(event.target.value);
+              }}
             />
           </p>
-          <p className="px-16 ">${price * 2}.00</p>
+          <p className="px-16 ">${price * quantity}.00</p>
         </div>
       </div>
     </div>

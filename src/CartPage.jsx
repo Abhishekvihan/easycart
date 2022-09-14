@@ -26,7 +26,6 @@ function CartPage({ field }) {
       return +item.id === +i;
     });
   });
-  console.log(data);
 
   return <>{data.length > 0 && <CartList products={data} />}</>;
 }
