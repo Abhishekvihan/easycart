@@ -16,12 +16,13 @@ function App() {
   let D = JSON.parse(localData);
 
   const [cart, setCart] = useState(D || {});
+  data = D;
 
   function handleAddtoCart(productId, count) {
     const oldCount = cart[productId] || 0;
     const newCart = { ...cart, [productId]: +oldCount + count };
     setCart(newCart);
-    data = { ...newCart };
+
     const cartString = JSON.stringify(newCart);
     localStorage.setItem('cart', cartString);
   }
