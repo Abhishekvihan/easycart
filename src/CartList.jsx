@@ -1,37 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import CartRow from './CartRow';
 import { BsArrowLeft } from 'react-icons/bs';
-import axios from 'axios';
-import NoProduct from './NoProduct';
 import EmptyCart from './EmptyCart';
 import Loading from './Loading';
+import { getProductData } from './api';
 
 function CartList({ field }) {
   const keys = Object.keys(field);
   const [loading, setLoading] = useState(true);
   const [productList, setproductList] = useState([]);
-
-  useEffect(function () {
-    const list = axios.get(
-      'https://dummyjson.com/products?limit=100&skip=0&select=title,price,description,thumbnail'
-    );
-    list
-      .then((response) => {
-        setproductList(response.data.products);
-        setLoading(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        return <NoProduct />;
-      });
-  }, []);
-  let data = productList.filter(function (item) {
-    return keys.find(function (i) {
-      return +item.id === +i;
+  useEffect(() => {
+    const promises = keys.map(function (productId) {
+      return getProductData(productId);
     });
-  });
-  if (data.length === 0) {
+    const badiPromise = Promise.all(promises);
+    badiPromise.then(function (response) {
+      setproductList(response);
+      setLoading(false);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  if (productList.length === 0) {
     return loading ? <Loading /> : <EmptyCart />;
   }
 
@@ -47,8 +37,8 @@ function CartList({ field }) {
         <p>Quantity</p>
         <p>Subtotal</p>
       </div>
-      {data.length > 0 &&
-        data.map((item) => (
+      {productList.length > 0 &&
+        productList.map((item) => (
           <CartRow
             src={item.thumbnail}
             title={item.title}

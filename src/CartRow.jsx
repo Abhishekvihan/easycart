@@ -3,7 +3,6 @@ import { useState } from 'react';
 
 function CartRow({ src, title, price, field }) {
   const [quantity, setQuantity] = useState(2);
-  console.log(field);
 
   return (
     <div className="max-w-6xl mx-auto">

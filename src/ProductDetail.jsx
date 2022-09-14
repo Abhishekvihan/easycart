@@ -17,13 +17,12 @@ function ProductDetail({ onAddToCart }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const p = getProductData(id);
-    p.then((response) => {
-      setProduct(response.data);
-      setLoading(false);
-    }).catch(() => {
-      setLoading(false);
-    });
+    getProductData(id)
+      .then((p) => {
+        setProduct(p);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
   }, [id]);
 
   if (!product) {
