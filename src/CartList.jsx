@@ -1,15 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-// import { getProductData, getProductList } from './api';
 import CartRow from './CartRow';
 import { BsArrowLeft } from 'react-icons/bs';
+import axios from 'axios';
 import NoProduct from './NoProduct';
+import EmptyCart from './EmptyCart';
+import Loading from './Loading';
 
-function CartList({ products }) {
-  if (products.length === 0) {
-    console.log(products);
-    return <NoProduct />;
+function CartList({ field, products }) {
+  const keys = Object.keys(field);
+  const [loading, setLoading] = useState(true);
+  const [productList, setproductList] = useState([]);
+
+  useEffect(function () {
+    const list = axios.get(
+      'https://dummyjson.com/products?limit=100&skip=0&select=title,price,description,thumbnail'
+    );
+    list
+      .then((response) => {
+        setproductList(response.data.products);
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+        return <NoProduct />;
+      });
+  }, []);
+  let data = productList.filter(function (item) {
+    return keys.find(function (i) {
+      return +item.id === +i;
+    });
+  });
+  if (data.length === 0) {
+    return loading ? <Loading /> : <EmptyCart />;
   }
+
   return (
     <div className="max-w-6xl p-10 mx-auto">
       <Link className="pb-5" to="/">
@@ -22,16 +47,17 @@ function CartList({ products }) {
         <p>Quantity</p>
         <p>Subtotal</p>
       </div>
-      {products.map((item) => (
-        <CartRow
-          src={item.thumbnail}
-          title={item.title}
-          id={item.id}
-          key={item.id}
-          price={item.price}
-          quantity={products.data}
-        />
-      ))}
+      {data.length > 0 &&
+        data.map((item) => (
+          <CartRow
+            src={item.thumbnail}
+            title={item.title}
+            id={item.id}
+            key={item.id}
+            price={item.price}
+            quantity={field.value}
+          />
+        ))}
       <div className="flex justify-between py-2 border border-gray-200 rounded-md borde">
         <div className="flex space-x-2">
           <input

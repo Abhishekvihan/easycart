@@ -1,8 +1,10 @@
 import React from 'react';
 import { useState } from 'react';
 
-function CartRow({ src, title, price }) {
+function CartRow({ src, title, price, field }) {
   const [quantity, setQuantity] = useState(2);
+  console.log(field);
+
   return (
     <div className="max-w-6xl mx-auto">
       <div className="border border-gray-100">
@@ -17,7 +19,7 @@ function CartRow({ src, title, price }) {
             <input
               className="w-8 text-center border border-gray-200 outline-0"
               type="number"
-              value={quantity}
+              value={() => (field = Object.value(field))}
               onChange={(event) => {
                 setQuantity(event.target.value);
               }}
