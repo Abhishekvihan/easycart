@@ -1,10 +1,15 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 // import { getProductData, getProductList } from './api';
 import CartRow from './CartRow';
+import { BsArrowLeft } from 'react-icons/bs';
 
 function CartList({ products }) {
   return (
     <div className="max-w-6xl p-10 mx-auto">
+      <Link className="pb-5" to="/">
+        <BsArrowLeft className="inline text-3xl" />
+      </Link>
       <div className="grid grid-cols-6 bg-gray-100 border border-gray-200 place-items-end">
         <p className="col-span-1"></p>
         <p className="col-span-2 pr-20">Product</p>

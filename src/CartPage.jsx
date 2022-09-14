@@ -1,5 +1,5 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { getProductList } from './api';
 import CartList from './CartList';
 // import CartRow from './CartRow';
 import NoProduct from './NoProduct';
@@ -10,7 +10,9 @@ function CartPage({ field }) {
   let Keys = Object.keys(field);
 
   useEffect(function () {
-    const list = getProductList();
+    const list = axios.get(
+      'https://dummyjson.com/products?limit=100&skip=0&select=title,price,description,thumbnail'
+    );
     list
       .then((response) => {
         setproductList(response.data.products);
