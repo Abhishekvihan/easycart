@@ -30,12 +30,13 @@ function CartList({ field }) {
       <Link className="pb-5" to="/">
         <BsArrowLeft className="inline text-3xl" />
       </Link>
-      <div className="grid grid-cols-6 bg-gray-100 border border-gray-200 place-items-end">
-        <p className="col-span-1"></p>
-        <p className="col-span-2 pr-20">Product</p>
-        <p>Price</p>
-        <p>Quantity</p>
-        <p>Subtotal</p>
+      <div className="hidden grid-cols-7 bg-gray-100 border border-gray-200 md:grid place-items-end">
+        <p className="col-span-2"></p>
+        <p className="hidden w-20 lg:inline"></p>
+        <p className="px-8 md:px-16">Product</p>
+        <p className="px-8 md:px-16">Price</p>
+        <p className="px-8 md:px-16">Quantity</p>
+        <p className="">Subtotal</p>
       </div>
       {productList.length > 0 &&
         productList.map((item) => (
@@ -51,15 +52,15 @@ function CartList({ field }) {
       <div className="flex justify-between py-2 border border-gray-200 rounded-md borde">
         <div className="flex space-x-2">
           <input
-            className="px-4 py-2 text-lg text-center border border-gray-600 rounded-md outline-0"
+            className="px-2 py-1 text-xs text-center border border-gray-600 rounded-md sm:text-sm md:w-48 w-36 md:px-4 md:py-2 md:text-lg outline-0"
             type="text"
             placeholder="Coupon Code"
           />
-          <button className="px-4 py-2 text-lg text-white bg-red-500 rounded-md">
+          <button className="px-2 py-1 text-xs text-white bg-red-500 rounded-md sm:text-sm md:px-4 md:py-2 md:text-lg">
             Apply Coupon
           </button>
         </div>
-        <button className="px-4 py-2 text-lg text-gray-600 bg-red-400 rounded-md">
+        <button className="px-2 py-1 text-xs text-gray-600 bg-red-400 rounded-md sm:text-sm md:px-4 md:py-2 md:text-lg">
           Update Cart
         </button>
       </div>
@@ -68,11 +69,17 @@ function CartList({ field }) {
           <p></p>
         </div>
         <div className="flex flex-col bg-white border border-gray-200">
-          <p className="px-4 py-2 text-lg bg-gray-100">Cart Total</p>
-          <p className="px-4 py-2 text-lg">Subtotal</p>
-          <p className="px-4 py-2 text-lg">Total</p>
+          <p className="px-2 py-1 text-base bg-gray-100 md:px-4 md:py-2 md:text-lg">
+            Cart Total
+          </p>
+          <p className="px-2 py-1 text-base md:px-4 md:py-2 md:text-lg">
+            Subtotal
+          </p>
+          <p className="px-2 py-1 text-base md:px-4 md:py-2 md:text-lg">
+            Total
+          </p>
           <div className="flex justify-center py-2">
-            <button className="px-16 py-2 text-center text-white bg-red-500 rounded-md">
+            <button className="px-5 py-2 text-xs text-center text-white bg-red-500 rounded-md md:px-16 sm:text-base md:text-lg">
               Proceed to checkout
             </button>
           </div>

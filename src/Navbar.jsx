@@ -29,7 +29,6 @@ function Navbar({ quantity }) {
             <div
               className="absolute cursor-pointer top-2 right-16"
               onClick={() => {
-                console.log(hamburger);
                 setHamburger(!hamburger);
               }}
             >

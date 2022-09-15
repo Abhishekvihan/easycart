@@ -10,7 +10,7 @@ function HamBurger() {
   const [account, setAccount] = useState(false);
   return (
     <>
-      <div className="flex flex-col">
+      <div className="flex flex-col my-4">
         <ul className="pt-3">
           <Link to="/">
             <li
