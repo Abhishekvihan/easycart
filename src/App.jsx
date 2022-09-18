@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import ProductDetail from './ProductDetail';
@@ -52,4 +52,4 @@ function App() {
   );
 }
 
-export default App;
+export default memo(App);

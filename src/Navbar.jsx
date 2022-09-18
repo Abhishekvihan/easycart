@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { AiOutlineClose } from 'react-icons/ai';
 import HamBurger from './HamBurger';
+import { memo } from 'react';
 
 function Navbar({ quantity }) {
   const [hamburger, setHamburger] = useState(false);
@@ -52,4 +53,4 @@ function Navbar({ quantity }) {
   );
 }
 
-export default Navbar;
+export default memo(Navbar);
