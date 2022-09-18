@@ -2,9 +2,26 @@ import React from 'react';
 import { memo } from 'react';
 import { useState } from 'react';
 
-function CartRow({ src, title, price, field }) {
+function CartRow({ src, title, price, field, id, setCart }) {
   const [quantity, setQuantity] = useState(2);
   const [visibility, setVisibility] = useState(true);
+
+  const myFunc = (id) => {
+    const myObj = localStorage.getItem('cart');
+    let arr1 = Object.keys(JSON.parse(myObj));
+    const index = arr1.indexOf(id.toString());
+    arr1 = arr1.filter((a) => +a !== id);
+    let arr2 = Object.values(JSON.parse(myObj));
+    arr2.splice(index, 1);
+
+    const obj = {};
+    arr1.forEach((value, index) => {
+      obj[value] = arr2[index];
+    });
+    localStorage.clear();
+    localStorage.setItem('cart', JSON.stringify(obj));
+    setCart(obj);
+  };
 
   return (
     <div className="max-w-6xl mx-auto">
@@ -18,7 +35,8 @@ function CartRow({ src, title, price, field }) {
           }
         >
           <div
-            onClick={() => {
+            onClick={(e) => {
+              myFunc(id);
               setVisibility(false);
             }}
             className="w-8 h-8 text-center text-gray-300 border border-gray-200 rounded-full cursor-pointer"
@@ -47,8 +65,9 @@ function CartRow({ src, title, price, field }) {
         </div>
         <div className={visibility ? 'md:hidden' : 'hidden'}>
           <div
-            onClick={() => {
+            onClick={(e) => {
               setVisibility(false);
+              myFunc(id);
             }}
             className="w-8 h-8 text-center text-gray-300 border border-gray-200 rounded-full cursor-pointer"
           >

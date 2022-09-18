@@ -16,6 +16,7 @@ function App() {
   let D = JSON.parse(localData);
 
   const [cart, setCart] = useState(D || {});
+  const [cartData, setCartData] = useState('');
   data = D;
 
   function handleAddtoCart(productId, count) {
@@ -24,6 +25,7 @@ function App() {
     setCart(newCart);
 
     const cartString = JSON.stringify(newCart);
+    setCartData(cartString);
     localStorage.setItem('cart', cartString);
   }
 
@@ -43,7 +45,12 @@ function App() {
           />
           <Route path="*" element={<NoProduct />} />
           <Route path="/Contact" element={<Contact />} />
-          <Route path="/CartPage" element={<CartPage field={data} />} />
+          <Route
+            path="/CartPage"
+            element={
+              <CartPage setCart={setCart} field={data} cartdata={cartData} />
+            }
+          />
         </Routes>
       </div>
 
