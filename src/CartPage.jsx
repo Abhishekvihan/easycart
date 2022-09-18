@@ -4,8 +4,10 @@ import CartList from './CartList';
 
 // import NoProduct from './NoProduct';
 
-function CartPage({ field }) {
-  return <>{<CartList field={field} />}</>;
+function CartPage({ field, cartData, setCart }) {
+  return (
+    <>{<CartList setCart={setCart} field={field} cartData={cartData} />}</>
+  );
 }
 
 export default memo(CartPage);

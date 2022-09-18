@@ -6,7 +6,7 @@ import EmptyCart from './EmptyCart';
 import Loading from './Loading';
 import { getProductData } from './api';
 
-function CartList({ field }) {
+function CartList({ field, setCart }) {
   const keys = Object.keys(field);
   const [loading, setLoading] = useState(true);
   const [productList, setproductList] = useState([]);
@@ -47,6 +47,7 @@ function CartList({ field }) {
             key={item.id}
             price={item.price}
             quantity={field}
+            setCart={setCart}
           />
         ))}
       <div className="flex justify-between py-2 border border-gray-200 rounded-md borde">
