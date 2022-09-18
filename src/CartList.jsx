@@ -30,13 +30,13 @@ function CartList({ field }) {
       <Link className="pb-5" to="/">
         <BsArrowLeft className="inline text-3xl" />
       </Link>
-      <div className="hidden grid-cols-7 bg-gray-100 border border-gray-200 md:grid place-items-end">
+      <div className="hidden grid-cols-7 bg-gray-100 border border-gray-200 md:grid">
         <p className="col-span-2"></p>
-        <p className="hidden w-20 lg:inline"></p>
-        <p className="px-8 md:px-16">Product</p>
-        <p className="px-8 md:px-16">Price</p>
-        <p className="px-8 md:px-16">Quantity</p>
-        <p className="">Subtotal</p>
+        <p className="col-span-2">Product</p>
+        <p className="">Price</p>
+        <p className="">Quantity</p>
+        <p className="justify-self-center">Subtotal</p>
+        <div></div>
       </div>
       {productList.length > 0 &&
         productList.map((item) => (

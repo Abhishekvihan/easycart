@@ -1,24 +1,36 @@
 import React from 'react';
+import { memo } from 'react';
 import { useState } from 'react';
 
 function CartRow({ src, title, price, field }) {
   const [quantity, setQuantity] = useState(2);
+  const [visibility, setVisibility] = useState(true);
 
   return (
     <div className="max-w-6xl mx-auto">
       <div className="border border-gray-100">
-        <div className="flex justify-center py-2 md:hidden">
+        <div className="flex justify-center py-2 md:hidden"></div>
+        <div
+          className={
+            visibility
+              ? 'hidden grid-cols-7 py-2 bg-white md:grid place-items-center justify-items-start'
+              : 'hidden'
+          }
+        >
+          <div
+            onClick={() => {
+              setVisibility(false);
+            }}
+            className="w-8 h-8 text-center text-gray-300 border border-gray-200 rounded-full cursor-pointer"
+          >
+            x
+          </div>
           <img
             className="border border-gray-300 w-28 "
             src={src}
             alt="try casual"
           />
-        </div>
-        <div className="hidden grid-cols-7 py-2 bg-white md:grid place-items-center justify-items-start">
-          <div className="w-8 h-8 text-center text-gray-300 border border-gray-200 rounded-full">
-            x
-          </div>
-          <img className="hidden w-20 lg:inline" src={src} alt="try casual" />
+
           <p className="col-span-2 text-red-500 ">{title}</p>
           <p className="">${price}.00</p>
           <p className="">
@@ -33,7 +45,23 @@ function CartRow({ src, title, price, field }) {
           </p>
           <p className="px-16 ">${price * quantity}.00</p>
         </div>
-        <div className="md:hidden">
+        <div className={visibility ? 'md:hidden' : 'hidden'}>
+          <div
+            onClick={() => {
+              setVisibility(false);
+            }}
+            className="w-8 h-8 text-center text-gray-300 border border-gray-200 rounded-full cursor-pointer"
+          >
+            x
+          </div>
+          <div className="flex justify-center">
+            <img
+              className={visibility ? 'md:hidden w-28 py-2 ' : 'hidden'}
+              src={src}
+              alt="try casual"
+            />
+          </div>
+
           <div className="flex justify-between px-6 py-2 border border-gray-300 rounded-md">
             <p className="col-span-2 text-red-500 ">Title:</p>
             <span>{title}</span>
@@ -63,4 +91,4 @@ function CartRow({ src, title, price, field }) {
   );
 }
 
-export default CartRow;
+export default memo(CartRow);

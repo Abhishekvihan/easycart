@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 function Footer() {
   return (
@@ -13,4 +13,4 @@ function Footer() {
   );
 }
 
-export default Footer;
+export default memo(Footer);
