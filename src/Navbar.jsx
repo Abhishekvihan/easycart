@@ -10,7 +10,7 @@ import { memo } from 'react';
 function Navbar({ quantity }) {
   const [hamburger, setHamburger] = useState(false);
   return (
-    <div className="py-5 bg-white">
+    <div className="py-5 bg-white border border-b-gray-400">
       <div className="flex items-center justify-between max-w-6xl mx-auto">
         <div>
           <img
@@ -18,7 +18,19 @@ function Navbar({ quantity }) {
             src="https://trycasuals.com/wp-content/uploads/2019/06/print-1-1.svg"
           />
         </div>
-        <div className="flex justify-between">
+        <div className="flex justify-between space-x-5">
+          <div className="hidden space-x-5 md:flex">
+            <Link to="/Login">
+              <button className="px-4 py-2 text-gray-800 border border-gray-400 rounded-md shadow-md">
+                Login
+              </button>
+            </Link>
+            <Link to="/SignUp">
+              <button className="px-4 py-2 text-white bg-indigo-400 rounded-md shadow-md">
+                SignUp
+              </button>
+            </Link>
+          </div>
           <div className="relative self-start inline">
             <Link to="/CartPage">
               <BsBag className="items-center inline text-3xl text-red-500 " />

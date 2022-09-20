@@ -80,22 +80,24 @@ function HamBurger() {
           >
             About
           </li>
-          <li
-            onClick={() => {
-              setAbout(false);
-              setHome(false);
-              setAllProducts(false);
-              setContact(false);
-              setAccount(true);
-            }}
-            className={
-              account
-                ? 'py-5 text-xl text-red-500 transition-all delay-150 border-b border-gray-300 cursor-pointer'
-                : 'py-5 text-xl text-gray-800 hover:text-red-500 transition-all delay-150 border-b border-gray-300 cursor-pointer'
-            }
-          >
-            Account
-          </li>
+          <Link to="/Login">
+            <li
+              onClick={() => {
+                setAbout(false);
+                setHome(false);
+                setAllProducts(false);
+                setContact(false);
+                setAccount(true);
+              }}
+              className={
+                account
+                  ? 'py-5 text-xl text-red-500 transition-all delay-150 border-b border-gray-300 cursor-pointer'
+                  : 'py-5 text-xl text-gray-800 hover:text-red-500 transition-all delay-150 border-b border-gray-300 cursor-pointer'
+              }
+            >
+              Account
+            </li>
+          </Link>
         </ul>
       </div>
     </>

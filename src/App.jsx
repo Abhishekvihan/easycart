@@ -8,6 +8,9 @@ import NoProduct from './NoProduct';
 import Contact from './Contact';
 import { useState } from 'react';
 import CartPage from './CartPage';
+import Signup from './Signup';
+import Login from './Login';
+import ForgetPassword from './ForgetPassword';
 let data = [];
 
 function App() {
@@ -51,6 +54,9 @@ function App() {
               <CartPage setCart={setCart} field={data} cartdata={cartData} />
             }
           />
+          <Route path="/Signup" element={<Signup />} />
+          <Route path="/Login" element={<Login />} />
+          <Route path="/ForgetPassword" element={<ForgetPassword />} />
         </Routes>
       </div>
 
