@@ -56,7 +56,7 @@ function ForgetPassword() {
                     type="email"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    placeholder="E-mail"
+                    placeholder="E-mail address"
                     className="w-64 px-8 py-2 border border-gray-400 rounded-md outline-none sm:w-96 md:w-80"
                   />
                   <HiOutlineMail className="absolute text-2xl text-gray-500 top-2" />

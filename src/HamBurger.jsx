@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-function HamBurger() {
+function HamBurger({ closeMenu }) {
   const [home, setHome] = useState(true);
   const [allProducts, setAllProducts] = useState(false);
   const [contact, setContact] = useState(false);
@@ -20,6 +20,7 @@ function HamBurger() {
                 setAllProducts(false);
                 setContact(false);
                 setAccount(false);
+                closeMenu(true);
               }}
               className={
                 home
@@ -37,6 +38,7 @@ function HamBurger() {
               setAllProducts(true);
               setContact(false);
               setAccount(false);
+              closeMenu(true);
             }}
             className={
               allProducts
@@ -54,6 +56,7 @@ function HamBurger() {
                 setAllProducts(false);
                 setContact(true);
                 setAccount(false);
+                closeMenu(true);
               }}
               className={
                 contact
@@ -71,6 +74,7 @@ function HamBurger() {
               setAllProducts(false);
               setContact(false);
               setAccount(false);
+              closeMenu(true);
             }}
             className={
               about
@@ -88,6 +92,7 @@ function HamBurger() {
                 setAllProducts(false);
                 setContact(false);
                 setAccount(true);
+                closeMenu(true);
               }}
               className={
                 account

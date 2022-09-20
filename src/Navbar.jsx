@@ -2,13 +2,17 @@ import React from 'react';
 import { useState } from 'react';
 import { BsBag } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
-import { GiHamburgerMenu } from 'react-icons/gi';
-import { AiOutlineClose } from 'react-icons/ai';
+import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
 import HamBurger from './HamBurger';
 import { memo } from 'react';
 
 function Navbar({ quantity }) {
-  const [hamburger, setHamburger] = useState(false);
+  const [menu, setMenu] = useState(false);
+  function closeMenu(a) {
+    if (a === true) {
+      setMenu(false);
+    }
+  }
   return (
     <div className="py-5 bg-white border border-b-gray-400">
       <div className="flex items-center justify-between max-w-6xl mx-auto">
@@ -42,20 +46,20 @@ function Navbar({ quantity }) {
             <div
               className="absolute cursor-pointer top-2 right-16"
               onClick={() => {
-                setHamburger(!hamburger);
+                setMenu(!menu);
               }}
             >
-              {hamburger ? <AiOutlineClose /> : <GiHamburgerMenu />}
+              {menu ? <AiOutlineClose /> : <AiOutlineMenu />}
             </div>
             <div className="transition ease-in-out delay-150">
               <div
                 className={
-                  hamburger
+                  menu
                     ? 'w-screen px-5 left-0 transition-all  h-96 '
                     : 'hidden '
                 }
               >
-                <HamBurger />
+                <HamBurger className="font-light" closeMenu={closeMenu} />
               </div>
             </div>
           </div>
