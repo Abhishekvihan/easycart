@@ -57,7 +57,7 @@ function Login() {
                     onBlur={handleBlur}
                     id="email"
                     type="email"
-                    placeholder="E-mail"
+                    placeholder="E-mail address"
                     className="w-64 px-8 py-2 border border-gray-400 rounded-md outline-none sm:w-96 md:w-80"
                   />
                   <HiOutlineMail className="absolute text-2xl text-gray-500 top-2" />
@@ -76,7 +76,7 @@ function Login() {
                       onBlur={handleBlur}
                       id="password"
                       type={password ? 'password' : 'text'}
-                      placeholder=" Enter Password"
+                      placeholder="Password"
                       className="w-64 px-8 py-2 border border-gray-400 rounded-md outline-none sm:w-96 md:w-80"
                     />
                     <BsShieldLock className="absolute text-2xl text-gray-500 top-2" />
@@ -103,7 +103,7 @@ function Login() {
                   <button
                     type="submit"
                     disabled={!isValid}
-                    className="px-10 py-2 text-center disabled:bg-indigo-300  text-white transition-all bg-indigo-600 rounded-md md:w-auto hover:bg-indigo-500 "
+                    className="px-10 py-2 text-center text-white transition-all bg-indigo-600 rounded-md disabled:bg-indigo-300 md:w-auto hover:bg-indigo-500 "
                   >
                     Log-in
                   </button>
