@@ -8,15 +8,15 @@ function CartRow({ src, title, price, field, id, setCart }) {
 
   const myFunc = (id) => {
     const myObj = localStorage.getItem('cart');
-    let arr1 = Object.keys(JSON.parse(myObj));
-    const index = arr1.indexOf(id.toString());
-    arr1 = arr1.filter((a) => +a !== id);
-    let arr2 = Object.values(JSON.parse(myObj));
-    arr2.splice(index, 1);
+    let keys = Object.keys(JSON.parse(myObj));
+    const index = keys.indexOf(id.toString());
+    keys = keys.filter((a) => +a !== id);
+    let values = Object.values(JSON.parse(myObj));
+    values.splice(index, 1);
 
     const obj = {};
-    arr1.forEach((value, index) => {
-      obj[value] = arr2[index];
+    keys.forEach((value, index) => {
+      obj[value] = values[index];
     });
     localStorage.clear();
     localStorage.setItem('cart', JSON.stringify(obj));

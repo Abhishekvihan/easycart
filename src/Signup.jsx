@@ -6,6 +6,7 @@ import { HiOutlineMail } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import Input from './Input';
 
 function Signup() {
   const schema = Yup.object().shape({
@@ -29,6 +30,7 @@ function Signup() {
     },
     onSubmit: handleFormSubmit,
     validationSchema: schema,
+    validateOnMount: true,
   });
   function handleFormSubmit() {
     console.log('submitting', values.email, values.password, values.username);
@@ -53,62 +55,57 @@ function Signup() {
                 className="flex flex-col items-center gap-y-6"
               >
                 <div className="relative">
-                  <label htmlFor="username" className="sr-only" />
-                  <input
-                    id="username"
-                    name="username"
+                  <Input
+                    label="username"
+                    id="email"
                     value={values.username}
+                    type="text"
+                    name="username"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    type="text"
                     placeholder="Username"
-                    className="w-64 px-8 py-2 border border-gray-400 rounded-md outline-none sm:w-96 md:w-80"
+                    touched={touched.username}
+                    error={errors.username}
                   />
                   <AiOutlineUser className="absolute text-2xl text-gray-500 top-2" />
-                  {touched.username && errors.username && (
-                    <div className="text-red-600">{errors.username}</div>
-                  )}
                 </div>
                 <div className="relative">
-                  <label htmlFor="email" className="sr-only md:flex" />
-                  <input
+                  <Input
+                    label="Email address"
                     id="email"
-                    name="email"
                     value={values.email}
+                    type="email"
+                    name="email"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    type="email"
-                    placeholder="E-mail address"
-                    className="w-64 px-8 py-2 border border-gray-400 rounded-md outline-none sm:w-96 md:w-80"
+                    placeholder="Email-address"
+                    touched={touched.email}
+                    error={errors.email}
                   />
                   <HiOutlineMail className="absolute text-2xl text-gray-500 top-2" />
-                  {touched.email && errors.email && (
-                    <div className="text-red-600">{errors.email}</div>
-                  )}
                 </div>
-
-                <div className="flex flex-col items-center">
-                  <div className="relative">
-                    <label htmlFor="password" className="sr-only" />
-                    <input
-                      id="password"
-                      name="password"
-                      value={values.password}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      type={password ? 'password' : 'text'}
-                      placeholder="Password"
-                      className="w-64 px-8 py-2 border border-gray-400 rounded-md outline-none sm:w-96 md:w-80"
-                    />
-                    <BsShieldLock className="absolute text-2xl text-gray-500 top-2" />
-                    {touched.password && errors.password && (
-                      <div className="text-red-600">{errors.password}</div>
-                    )}
-                  </div>
-
-                  <label htmlFor="showpassword" />
+                <div className="relative">
+                  <Input
+                    label="Password"
+                    id="password"
+                    value={values.password}
+                    type={password ? 'password' : 'text'}
+                    name="password"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder="password"
+                    touched={touched.password}
+                    error={errors.password}
+                  />
+                  <BsShieldLock className="absolute text-2xl text-gray-500 top-2" />
                   <div className="flex items-center justify-center space-x-5">
-                    <p className="text-sm text-gray-400 ">Show Password</p>
+                    <label
+                      className="text-sm text-gray-400"
+                      htmlFor="showpassword"
+                    >
+                      Show password
+                    </label>
+
                     <input
                       onClick={() => {
                         setpassword(!password);
@@ -119,6 +116,7 @@ function Signup() {
                     />
                   </div>
                 </div>
+
                 <div className="relative">
                   <label htmlFor="reenterpassword" className="sr-only" />
                   <input

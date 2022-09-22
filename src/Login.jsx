@@ -4,6 +4,7 @@ import { BsShieldLock } from 'react-icons/bs';
 import { HiOutlineMail } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
+import Input from './Input';
 
 function Login() {
   const schema = Yup.object().shape({
@@ -25,6 +26,7 @@ function Login() {
     },
     onSubmit: handleFormSubmit,
     validationSchema: schema,
+    validateOnMount: true,
   });
   function handleFormSubmit() {
     console.log('submitting', values.email, values.password);
@@ -49,45 +51,42 @@ function Login() {
                 className="flex flex-col items-center gap-y-8"
               >
                 <div className="relative">
-                  <label htmlFor="email" className="sr-only md:flex" />
-                  <input
-                    name="email"
+                  <Input
+                    label="Email address"
+                    id="email"
                     value={values.email}
+                    type="email"
+                    name="email"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    id="email"
-                    type="email"
-                    placeholder="E-mail address"
-                    className="w-64 px-8 py-2 border border-gray-400 rounded-md outline-none sm:w-96 md:w-80"
+                    placeholder="Email-address"
+                    touched={touched.email}
+                    error={errors.email}
                   />
                   <HiOutlineMail className="absolute text-2xl text-gray-500 top-2" />
-                  {touched.email && errors.email && (
-                    <div className="text-red-600">{errors.email}</div>
-                  )}
                 </div>
-
-                <div className="flex flex-col items-center">
-                  <div className="relative">
-                    <label htmlFor="password" className="sr-only" />
-                    <input
-                      name="password"
-                      value={values.password}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      id="password"
-                      type={password ? 'password' : 'text'}
-                      placeholder="Password"
-                      className="w-64 px-8 py-2 border border-gray-400 rounded-md outline-none sm:w-96 md:w-80"
-                    />
-                    <BsShieldLock className="absolute text-2xl text-gray-500 top-2" />
-                    {touched.password && errors.password && (
-                      <div className="text-red-600">{errors.password}</div>
-                    )}
-                  </div>
-
-                  <label htmlFor="showpassword" />
+                <div className="relative">
+                  <Input
+                    label="Password"
+                    id="password"
+                    value={values.password}
+                    type={password ? 'password' : 'text'}
+                    name="password"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder="password"
+                    touched={touched.password}
+                    error={errors.password}
+                  />
+                  <BsShieldLock className="absolute text-2xl text-gray-500 top-2" />
                   <div className="flex items-center justify-center space-x-5">
-                    <p className="text-sm text-gray-400 ">Show Password</p>
+                    <label
+                      className="text-sm text-gray-400"
+                      htmlFor="showpassword"
+                    >
+                      Show password
+                    </label>
+
                     <input
                       onClick={() => {
                         setpassword(!password);

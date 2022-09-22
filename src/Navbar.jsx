@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
 import HamBurger from './HamBurger';
 import { memo } from 'react';
+import { HiOutlineHome } from 'react-icons/hi';
 
 function Navbar({ quantity }) {
   const [menu, setMenu] = useState(false);
@@ -24,6 +25,11 @@ function Navbar({ quantity }) {
         </div>
         <div className="flex justify-between space-x-5">
           <div className="hidden space-x-5 md:flex">
+            <div className="self-center">
+              <Link to="/">
+                <HiOutlineHome className="text-3xl text-indigo-500 " />
+              </Link>
+            </div>
             <Link to="/Login">
               <button className="px-4 py-2 text-gray-800 border border-gray-400 rounded-md shadow-md">
                 Login
