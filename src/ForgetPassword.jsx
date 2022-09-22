@@ -1,4 +1,5 @@
 import { useFormik } from 'formik';
+import Input from './Input';
 import React, { memo } from 'react';
 import { HiOutlineMail } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
@@ -22,6 +23,7 @@ function ForgetPassword() {
     },
     onSubmit: handleFormSubmit,
     validationSchema: schema,
+    validateOnMount: true,
   });
   function handleFormSubmit() {
     console.log('submitting', values.email);
@@ -48,21 +50,19 @@ function ForgetPassword() {
                 className="flex flex-col items-center gap-y-8"
               >
                 <div className="relative">
-                  <label htmlFor="email" className="sr-only md:flex" />
-                  <input
-                    name="email"
-                    value={values.email}
+                  <Input
+                    label="Email address"
                     id="email"
+                    value={values.email}
                     type="email"
+                    name="email"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    placeholder="E-mail address"
-                    className="w-64 px-8 py-2 border border-gray-400 rounded-md outline-none sm:w-96 md:w-80"
+                    placeholder="Email-address"
+                    touched={touched.email}
+                    error={errors.email}
                   />
                   <HiOutlineMail className="absolute text-2xl text-gray-500 top-2" />
-                  {touched.email && errors.email && (
-                    <div className="text-red-600">{errors.email}</div>
-                  )}
                 </div>
 
                 <div className="pb-4 ">
