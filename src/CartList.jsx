@@ -21,7 +21,9 @@ function CartList({ field, setCart }) {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   if (productList.length === 0) {
+    console.log(field);
     return loading ? <Loading /> : <EmptyCart />;
   }
 
@@ -46,7 +48,7 @@ function CartList({ field, setCart }) {
             id={item.id}
             key={item.id}
             price={item.price}
-            quantity={field}
+            Quantity={field}
             setCart={setCart}
           />
         ))}

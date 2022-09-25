@@ -41,7 +41,7 @@ function ProductDetail({ onAddToCart }) {
             <div className="md:mr-5 w-68 hover:inline-block md:w-96 md:h-96 hover:w-full hover:h-full">
               <img
                 alt="try"
-                className="object-cover w-full h-full mr-10 transition-all hover:scale-150 hover:will-change-scroll hover:object-none"
+                className="object-cover w-full h-full mr-10 transition-all hover:scale-150 hover:will-change-scroll hover:object-none hover:overflow-scroll"
                 src={product.thumbnail}
               />
             </div>

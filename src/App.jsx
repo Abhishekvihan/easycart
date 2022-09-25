@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import ProductDetail from './ProductDetail';
@@ -6,7 +6,6 @@ import { Routes, Route } from 'react-router-dom';
 import ProductListPage from './ProductListPage';
 import NoProduct from './NoProduct';
 import Contact from './Contact';
-import { useState } from 'react';
 import CartPage from './CartPage';
 import Signup from './Signup';
 import Login from './Login';
@@ -33,12 +32,13 @@ function App() {
   }
 
   const totalCount = Object.keys(cart).reduce(function (previous, current) {
-    return previous + cart[current];
+    return +previous + Number(cart[current]);
   }, 0);
 
   return (
     <div className="flex flex-col bg-gray-100">
       <Navbar quantity={totalCount} />
+
       <div className="grow">
         <Routes>
           <Route index element={<ProductListPage />} />
@@ -59,7 +59,6 @@ function App() {
           <Route path="/ForgetPassword" element={<ForgetPassword />} />
         </Routes>
       </div>
-
       <Footer />
     </div>
   );
