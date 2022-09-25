@@ -1,10 +1,11 @@
 import React from 'react';
+import { useEffect } from 'react';
 import { memo } from 'react';
 import { useState } from 'react';
 
-function CartRow({ src, title, price, field, id, setCart }) {
-  const [quantity, setQuantity] = useState(2);
+function CartRow({ src, title, price, Quantity, id, setCart }) {
   const [visibility, setVisibility] = useState(true);
+  const [updatedQuantity, setUpdatedQuantity] = useState(Quantity[id]);
 
   const myFunc = (id) => {
     const myObj = localStorage.getItem('cart');
@@ -22,6 +23,27 @@ function CartRow({ src, title, price, field, id, setCart }) {
     localStorage.setItem('cart', JSON.stringify(obj));
     setCart(obj);
   };
+
+  useEffect(() => {
+    (function myFunct(id) {
+      const myObj = localStorage.getItem('cart');
+      let keys = Object.keys(JSON.parse(myObj));
+      const index = keys.indexOf(id.toString());
+      // keys = keys.filter((a) => +a !== id);
+      let values = Object.values(JSON.parse(myObj));
+      values.splice(index, 1, updatedQuantity);
+
+      const obj = {};
+      keys.forEach((value, index) => {
+        obj[value] = values[index];
+      });
+      localStorage.clear();
+      localStorage.setItem('cart', JSON.stringify(obj));
+      setCart(obj);
+    })(id);
+
+    // eslint-disable-next-line
+  }, [updatedQuantity]);
 
   return (
     <div className="max-w-6xl mx-auto">
@@ -55,13 +77,13 @@ function CartRow({ src, title, price, field, id, setCart }) {
             <input
               className="w-8 text-center border border-gray-200 outline-0"
               type="number"
-              value={quantity}
+              value={updatedQuantity}
               onChange={(event) => {
-                setQuantity(event.target.value);
+                setUpdatedQuantity(event.target.value);
               }}
             />
           </p>
-          <p className="px-16 ">${price * quantity}.00</p>
+          <p className="px-16 ">${price * updatedQuantity}.00</p>
         </div>
         <div className={visibility ? 'md:hidden' : 'hidden'}>
           <div
@@ -94,15 +116,15 @@ function CartRow({ src, title, price, field, id, setCart }) {
             <input
               type="number"
               onChange={(event) => {
-                setQuantity(event.target.value);
+                setUpdatedQuantity(event.target.value);
               }}
-              value={quantity}
+              value={updatedQuantity}
               className="w-16 px-2 py-1 text-center border border-gray-300"
             />
           </div>
           <div className="flex justify-between px-6 py-2 border border-gray-300 rounded-md">
             <p className="col-span-2 text-red-500 ">Subtotal:</p>
-            <span>${price * quantity}.00</span>
+            <span>${price * updatedQuantity}.00</span>
           </div>
         </div>
       </div>
