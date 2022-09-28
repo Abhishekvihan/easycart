@@ -1,9 +1,19 @@
 import React from 'react';
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 import { memo } from 'react';
 import { useState } from 'react';
 
-function CartRow({ src, title, price, Quantity, id, setCart }) {
+function CartRow({
+  src,
+  title,
+  price,
+  Quantity,
+  id,
+  setCart,
+  handleUpdate,
+  setPId,
+  setChangedQuantity,
+}) {
   const [visibility, setVisibility] = useState(true);
   const [updatedQuantity, setUpdatedQuantity] = useState(Quantity[id]);
 
@@ -24,25 +34,25 @@ function CartRow({ src, title, price, Quantity, id, setCart }) {
     setCart(obj);
   };
 
-  useEffect(() => {
-    (function updatecart(id) {
-      const myObj = localStorage.getItem('cart');
-      let keys = Object.keys(JSON.parse(myObj));
-      const index = keys.indexOf(id.toString());
-      let values = Object.values(JSON.parse(myObj));
-      values.splice(index, 1, updatedQuantity);
+  // useEffect(() => {
+  //   (function updatecart(id) {
+  //     const myObj = localStorage.getItem('cart');
+  //     let keys = Object.keys(JSON.parse(myObj));
+  //     const index = keys.indexOf(id.toString());
+  //     let values = Object.values(JSON.parse(myObj));
+  //     values.splice(index, 1, updatedQuantity);
 
-      const obj = {};
-      keys.forEach((value, index) => {
-        obj[value] = values[index];
-      });
-      localStorage.clear();
-      localStorage.setItem('cart', JSON.stringify(obj));
-      setCart(obj);
-    })(id);
+  //     const obj = {};
+  //     keys.forEach((value, index) => {
+  //       obj[value] = values[index];
+  //     });
+  //     localStorage.clear();
+  //     localStorage.setItem('cart', JSON.stringify(obj));
+  //     setCart(obj);
+  //   })(id);
 
-    // eslint-disable-next-line
-  }, [updatedQuantity]);
+  //   // eslint-disable-next-line
+  // }, [updatedQuantity]);
 
   return (
     <div className="max-w-6xl mx-auto">
@@ -78,6 +88,9 @@ function CartRow({ src, title, price, Quantity, id, setCart }) {
               type="number"
               value={updatedQuantity}
               onChange={(event) => {
+                setPId(Quantity[id]);
+                setChangedQuantity(event.target.value);
+                handleUpdate(id, Quantity[id]);
                 setUpdatedQuantity(event.target.value);
               }}
             />

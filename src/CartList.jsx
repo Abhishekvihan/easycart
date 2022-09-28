@@ -10,6 +10,9 @@ function CartList({ field, setCart }) {
   const keys = Object.keys(field);
   const [loading, setLoading] = useState(true);
   const [productList, setproductList] = useState([]);
+  const [pId, setPId] = useState();
+  const [changedQuantity, setChangedQuantity] = useState();
+
   useEffect(() => {
     const promises = keys.map(function (productId) {
       return getProductData(productId);
@@ -21,6 +24,23 @@ function CartList({ field, setCart }) {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  function handleUpdate(productId, updatedQuantity) {
+    // function updatecart(id) {
+    const myObj = localStorage.getItem('cart');
+    let keys = Object.keys(JSON.parse(myObj));
+    const index = keys.indexOf(productId.toString());
+    let values = Object.values(JSON.parse(myObj));
+    values.splice(index, 1, updatedQuantity);
+
+    const obj = {};
+    keys.forEach((value, index) => {
+      obj[value] = values[index];
+    });
+    localStorage.clear();
+    localStorage.setItem('cart', JSON.stringify(obj));
+    setCart(obj);
+  }
 
   if (productList.length === 0) {
     return loading ? <Loading /> : <EmptyCart />;
@@ -49,6 +69,9 @@ function CartList({ field, setCart }) {
             price={item.price}
             Quantity={field}
             setCart={setCart}
+            handleUpdate={handleUpdate}
+            setChangedQuantity={setChangedQuantity}
+            setPId={setPId}
           />
         ))}
       <div className="flex justify-between py-2 border border-gray-200 rounded-md borde">
@@ -62,7 +85,10 @@ function CartList({ field, setCart }) {
             Apply Coupon
           </button>
         </div>
-        <button className="px-2 py-1 text-xs text-gray-600 bg-red-400 rounded-md sm:text-sm md:px-4 md:py-2 md:text-lg">
+        <button
+          onClick={() => handleUpdate(pId, changedQuantity)}
+          className="px-2 py-1 text-xs text-gray-600 bg-red-400 rounded-md sm:text-sm md:px-4 md:py-2 md:text-lg"
+        >
           Update Cart
         </button>
       </div>
