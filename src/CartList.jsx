@@ -10,8 +10,6 @@ function CartList({ field, setCart }) {
   const keys = Object.keys(field);
   const [loading, setLoading] = useState(true);
   const [productList, setproductList] = useState([]);
-  const [pId, setPId] = useState();
-  const [changedQuantity, setChangedQuantity] = useState();
 
   useEffect(() => {
     const promises = keys.map(function (productId) {
@@ -23,23 +21,10 @@ function CartList({ field, setCart }) {
       setLoading(false);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [field]);
 
-  function handleUpdate(productId, updatedQuantity) {
-    // function updatecart(id) {
-    const myObj = localStorage.getItem('cart');
-    let keys = Object.keys(JSON.parse(myObj));
-    const index = keys.indexOf(productId.toString());
-    let values = Object.values(JSON.parse(myObj));
-    values.splice(index, 1, updatedQuantity);
-
-    const obj = {};
-    keys.forEach((value, index) => {
-      obj[value] = values[index];
-    });
-    localStorage.clear();
-    localStorage.setItem('cart', JSON.stringify(obj));
-    setCart(obj);
+  function handleUpdate(change) {
+    console.log('changed number', change);
   }
 
   if (productList.length === 0) {
@@ -67,11 +52,9 @@ function CartList({ field, setCart }) {
             id={item.id}
             key={item.id}
             price={item.price}
-            Quantity={field}
+            cart={field}
             setCart={setCart}
-            handleUpdate={handleUpdate}
-            setChangedQuantity={setChangedQuantity}
-            setPId={setPId}
+            updateCart={handleUpdate}
           />
         ))}
       <div className="flex justify-between py-2 border border-gray-200 rounded-md borde">
@@ -86,7 +69,7 @@ function CartList({ field, setCart }) {
           </button>
         </div>
         <button
-          onClick={() => handleUpdate(pId, changedQuantity)}
+          onClick={() => handleUpdate()}
           className="px-2 py-1 text-xs text-gray-600 bg-red-400 rounded-md sm:text-sm md:px-4 md:py-2 md:text-lg"
         >
           Update Cart
