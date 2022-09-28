@@ -23,7 +23,6 @@ function CartList({ field, setCart }) {
   }, []);
 
   if (productList.length === 0) {
-    console.log(field);
     return loading ? <Loading /> : <EmptyCart />;
   }
 

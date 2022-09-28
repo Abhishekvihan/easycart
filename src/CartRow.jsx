@@ -25,11 +25,10 @@ function CartRow({ src, title, price, Quantity, id, setCart }) {
   };
 
   useEffect(() => {
-    (function myFunct(id) {
+    (function updatecart(id) {
       const myObj = localStorage.getItem('cart');
       let keys = Object.keys(JSON.parse(myObj));
       const index = keys.indexOf(id.toString());
-      // keys = keys.filter((a) => +a !== id);
       let values = Object.values(JSON.parse(myObj));
       values.splice(index, 1, updatedQuantity);
 
