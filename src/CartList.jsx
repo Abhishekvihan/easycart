@@ -1,34 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import CartRow from './CartRow';
 import { BsArrowLeft } from 'react-icons/bs';
 import EmptyCart from './EmptyCart';
-import Loading from './Loading';
-import { getProductData } from './api';
 
-function CartList({ field, setCart }) {
-  const keys = Object.keys(field);
-  const [loading, setLoading] = useState(true);
-  const [productList, setproductList] = useState([]);
-  useEffect(() => {
-    const promises = keys.map(function (productId) {
-      return getProductData(productId);
-    });
-    const badiPromise = Promise.all(promises);
-    badiPromise.then(function (response) {
-      setproductList(response);
-      setLoading(false);
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+function CartList({ products, cart, setCart, updateCart }) {
+  const [localcart, setLocalCart] = useState(cart);
+  useEffect(
+    function () {
+      setLocalCart(cart);
+    },
+    [cart]
+  );
 
-  if (productList.length === 0) {
-    console.log(field);
-    return loading ? <Loading /> : <EmptyCart />;
+  function handleUpdateCart() {
+    updateCart(localcart);
+    localStorage.clear();
+    localStorage.setItem('cart', JSON.stringify(localcart));
+  }
+
+  if (products.length === 0) {
+    return <EmptyCart />;
+  }
+  function handleQunatityChange(productId, newValue) {
+    const newlocalCart = { ...localcart, [productId]: newValue };
+    setLocalCart(newlocalCart);
   }
 
   return (
-    <div className="max-w-6xl p-10 mx-auto">
+    <div className="p-10 ">
       <Link className="pb-5" to="/">
         <BsArrowLeft className="inline text-3xl" />
       </Link>
@@ -37,19 +37,21 @@ function CartList({ field, setCart }) {
         <p className="col-span-2">Product</p>
         <p className="">Price</p>
         <p className="">Quantity</p>
-        <p className="justify-self-center">Subtotal</p>
+        <p className="justify-self-start">Subtotal</p>
         <div></div>
       </div>
-      {productList.length > 0 &&
-        productList.map((item) => (
+      {products.length > 0 &&
+        products.map((item) => (
           <CartRow
             src={item.thumbnail}
             title={item.title}
             id={item.id}
             key={item.id}
             price={item.price}
-            Quantity={field}
+            cart={cart}
             setCart={setCart}
+            onQunatityChange={handleQunatityChange}
+            localcart={localcart}
           />
         ))}
       <div className="flex justify-between py-2 border border-gray-200 rounded-md borde">
@@ -63,7 +65,10 @@ function CartList({ field, setCart }) {
             Apply Coupon
           </button>
         </div>
-        <button className="px-2 py-1 text-xs text-gray-600 bg-red-400 rounded-md sm:text-sm md:px-4 md:py-2 md:text-lg">
+        <button
+          onClick={handleUpdateCart}
+          className="px-2 py-1 text-xs text-gray-600 bg-red-400 rounded-md sm:text-sm md:px-4 md:py-2 md:text-lg"
+        >
           Update Cart
         </button>
       </div>

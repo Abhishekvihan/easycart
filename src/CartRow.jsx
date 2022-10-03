@@ -1,67 +1,51 @@
 import React from 'react';
-import { useEffect } from 'react';
 import { memo } from 'react';
 import { useState } from 'react';
+import Loading from './Loading';
 
-function CartRow({ src, title, price, Quantity, id, setCart }) {
-  const [visibility, setVisibility] = useState(true);
-  const [updatedQuantity, setUpdatedQuantity] = useState(Quantity[id]);
+function CartRow({
+  src,
+  title,
+  price,
+  cart,
+  id,
+  setCart,
+  onQunatityChange,
+  localcart,
+}) {
+  const [loading, setLoading] = useState(false);
 
-  const myFunc = (id) => {
-    const myObj = localStorage.getItem('cart');
-    let keys = Object.keys(JSON.parse(myObj));
-    const index = keys.indexOf(id.toString());
-    keys = keys.filter((a) => +a !== id);
-    let values = Object.values(JSON.parse(myObj));
-    values.splice(index, 1);
-
-    const obj = {};
-    keys.forEach((value, index) => {
-      obj[value] = values[index];
-    });
+  function handleRemove(event) {
+    setLoading(true);
+    const productId = id;
+    const newCart = { ...cart };
+    delete newCart[productId];
+    setCart(newCart);
     localStorage.clear();
-    localStorage.setItem('cart', JSON.stringify(obj));
-    setCart(obj);
-  };
+    localStorage.setItem('cart', JSON.stringify(newCart));
+  }
 
-  useEffect(() => {
-    (function myFunct(id) {
-      const myObj = localStorage.getItem('cart');
-      let keys = Object.keys(JSON.parse(myObj));
-      const index = keys.indexOf(id.toString());
-      // keys = keys.filter((a) => +a !== id);
-      let values = Object.values(JSON.parse(myObj));
-      values.splice(index, 1, updatedQuantity);
-
-      const obj = {};
-      keys.forEach((value, index) => {
-        obj[value] = values[index];
-      });
-      localStorage.clear();
-      localStorage.setItem('cart', JSON.stringify(obj));
-      setCart(obj);
-    })(id);
-
-    // eslint-disable-next-line
-  }, [updatedQuantity]);
+  function handleChange(event) {
+    onQunatityChange(id, +event.target.value);
+    if (loading) {
+      return <Loading />;
+    }
+  }
 
   return (
-    <div className="max-w-6xl mx-auto">
-      <div className="border border-gray-100">
-        <div className="flex justify-center py-2 md:hidden"></div>
+    <div className="">
+      <div className="border border-gray-50">
         <div
+          productid={id}
           className={
-            visibility
-              ? 'hidden grid-cols-7 py-2 bg-white md:grid place-items-center justify-items-start'
-              : 'hidden'
+            'hidden grid-cols-7 py-2 bg-white md:grid place-items-center justify-items-start'
           }
         >
           <div
-            onClick={(e) => {
-              myFunc(id);
-              setVisibility(false);
+            onClick={(event) => {
+              handleRemove(event);
             }}
-            className="w-8 h-8 text-center text-gray-300 border border-gray-200 rounded-full cursor-pointer"
+            className="w-8 h-8 text-center text-gray-300 border border-gray-200 rounded-full cursor-pointer justify-self-start"
           >
             x
           </div>
@@ -75,21 +59,22 @@ function CartRow({ src, title, price, Quantity, id, setCart }) {
           <p className="">${price}.00</p>
           <p className="">
             <input
+              productid={id}
               className="w-8 text-center border border-gray-200 outline-0"
               type="number"
-              value={updatedQuantity}
+              value={localcart[id]}
               onChange={(event) => {
-                setUpdatedQuantity(event.target.value);
+                handleChange(event);
               }}
             />
           </p>
-          <p className="px-16 ">${price * updatedQuantity}.00</p>
+          <p className="">${price * localcart[id]}.00</p>
         </div>
-        <div className={visibility ? 'md:hidden' : 'hidden'}>
+        <div className={'md:hidden bg-gray-50'}>
           <div
-            onClick={(e) => {
-              setVisibility(false);
-              myFunc(id);
+            productid={id}
+            onClick={(event) => {
+              handleRemove(event);
             }}
             className="w-8 h-8 text-center text-gray-300 border border-gray-200 rounded-full cursor-pointer"
           >
@@ -97,7 +82,7 @@ function CartRow({ src, title, price, Quantity, id, setCart }) {
           </div>
           <div className="flex justify-center">
             <img
-              className={visibility ? 'md:hidden w-28 py-2 ' : 'hidden'}
+              className={'md:hidden w-28 py-2 '}
               src={src}
               alt="try casual"
             />
@@ -114,17 +99,18 @@ function CartRow({ src, title, price, Quantity, id, setCart }) {
           <div className="flex justify-between px-6 py-2 border border-gray-300 rounded-md">
             <p className="col-span-2 text-red-500 ">Quantity:</p>
             <input
+              productid={id}
               type="number"
               onChange={(event) => {
-                setUpdatedQuantity(event.target.value);
+                handleChange(event);
               }}
-              value={updatedQuantity}
+              value={localcart[id]}
               className="w-16 px-2 py-1 text-center border border-gray-300"
             />
           </div>
           <div className="flex justify-between px-6 py-2 border border-gray-300 rounded-md">
             <p className="col-span-2 text-red-500 ">Subtotal:</p>
-            <span>${price * updatedQuantity}.00</span>
+            <span>${price * localcart[id]}.00</span>
           </div>
         </div>
       </div>
