@@ -1,50 +1,40 @@
 import React from 'react';
-import { useEffect } from 'react';
-// import { useEffect } from 'react';
 import { memo } from 'react';
 import { useState } from 'react';
 import Loading from './Loading';
 
-function CartRow({ src, title, price, cart, id, setCart, updateCart }) {
+function CartRow({
+  src,
+  title,
+  price,
+  cart,
+  id,
+  setCart,
+  onQunatityChange,
+  localcart,
+}) {
   const [loading, setLoading] = useState(false);
-  const [localcart, setLocalCart] = useState(cart);
-
-  useEffect(
-    function () {
-      setLocalCart(cart);
-    },
-    [cart]
-  );
 
   function handleRemove(event) {
     setLoading(true);
     const productId = id;
     const newCart = { ...cart };
     delete newCart[productId];
-    console.log('id', id, newCart);
     setCart(newCart);
     localStorage.clear();
     localStorage.setItem('cart', JSON.stringify(newCart));
   }
 
   function handleChange(event) {
-    const newValue = event.target.value;
-    const productId = event.target.getAttribute('productid');
-    const newlocalCart = { ...localcart, [productId]: newValue };
-    setLocalCart(newlocalCart);
-    console.log(productId, newValue);
-  }
-
-  function updateMyCart() {
-    setCart(localcart);
-  }
-  if (loading) {
-    return <Loading />;
+    onQunatityChange(id, +event.target.value);
+    if (loading) {
+      return <Loading />;
+    }
   }
 
   return (
-    <div className="max-w-6xl mx-auto">
-      <div className="border border-gray-100">
+    <div className="">
+      <div className="border border-gray-50">
         <div
           productid={id}
           className={
@@ -53,11 +43,9 @@ function CartRow({ src, title, price, cart, id, setCart, updateCart }) {
         >
           <div
             onClick={(event) => {
-              // myFunc(id);
               handleRemove(event);
-              // setVisibility(false);
             }}
-            className="w-8 h-8 text-center text-gray-300 border border-gray-200 rounded-full cursor-pointer"
+            className="w-8 h-8 text-center text-gray-300 border border-gray-200 rounded-full cursor-pointer justify-self-start"
           >
             x
           </div>
@@ -80,9 +68,9 @@ function CartRow({ src, title, price, cart, id, setCart, updateCart }) {
               }}
             />
           </p>
-          <p className="px-16 ">${price * localcart[id]}.00</p>
+          <p className="">${price * localcart[id]}.00</p>
         </div>
-        <div className={'md:hidden'}>
+        <div className={'md:hidden bg-gray-50'}>
           <div
             productid={id}
             onClick={(event) => {
