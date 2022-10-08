@@ -7,8 +7,9 @@ import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Input from './Input';
+import axios from 'axios';
 
-function Signup() {
+function Signup({ setUser }) {
   const schema = Yup.object().shape({
     email: Yup.string().email().required(),
     password: Yup.string().required().min(8).max(16),
@@ -33,9 +34,24 @@ function Signup() {
     validateOnMount: true,
   });
   function handleFormSubmit() {
-    console.log('submitting', values.email, values.password, values.username);
+    axios
+      .post('https://myeasykart.codeyogi.io/signup', {
+        fullName: values.username,
+        email: values.email,
+        password: values.password,
+      })
+      .then((response) => {
+        console.log(response.data);
+        const { user, token } = response.data;
+        localStorage.setItem('token', token);
+        setUser(user);
+      })
+      .catch((error) => {
+        console.log(error, 'invalid credetials');
+      });
   }
   const [password, setpassword] = useState(true);
+
   return (
     <>
       <div className="p-8 bg-white">
@@ -57,7 +73,7 @@ function Signup() {
                 <div className="relative">
                   <Input
                     label="username"
-                    id="email"
+                    id="username"
                     value={values.username}
                     type="text"
                     name="username"
@@ -131,7 +147,7 @@ function Signup() {
                   <button
                     type="submit"
                     disabled={!isValid}
-                    className="px-10 py-2 text-center text-white transition-all bg-indigo-600 rounded-md md:w-auto hover:bg-indigo-500 disabled:bg-indigo-300 "
+                    className="px-10 py-2 hover:-translate-y-0.5 active:translate-y-0.5 text-center text-white transition-all bg-indigo-600 rounded-md md:w-auto hover:bg-indigo-500 disabled:bg-indigo-300 "
                   >
                     Sign up
                   </button>
