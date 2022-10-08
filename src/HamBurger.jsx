@@ -24,30 +24,32 @@ function HamBurger({ closeMenu }) {
               }}
               className={
                 home
-                  ? 'py-5 text-xl text-red-500 transition-all delay-150 border-b border-gray-300 cursor-pointer'
+                  ? 'py-5 text-xl text-red-500 transition-all delay-100 border-b border-gray-300 cursor-pointer'
                   : 'py-5 text-xl text-gray-800 hover:text-red-500 transition-all delay-150 border-b border-gray-300 cursor-pointer'
               }
             >
               Home
             </li>
           </Link>
-          <li
-            onClick={() => {
-              setAbout(false);
-              setHome(false);
-              setAllProducts(true);
-              setContact(false);
-              setAccount(false);
-              closeMenu(true);
-            }}
-            className={
-              allProducts
-                ? 'py-5 text-xl text-red-500 transition-all delay-150 border-b border-gray-300 cursor-pointer'
-                : 'py-5 text-xl text-gray-800 hover:text-red-500 transition-all delay-150 border-b border-gray-300 cursor-pointer'
-            }
-          >
-            All Products
-          </li>
+          <Link to="/productlist">
+            <li
+              onClick={() => {
+                setAbout(false);
+                setHome(false);
+                setAllProducts(true);
+                setContact(false);
+                setAccount(false);
+                closeMenu(true);
+              }}
+              className={
+                allProducts
+                  ? 'py-5 text-xl text-red-500 transition-all delay-100 border-b border-gray-300 cursor-pointer'
+                  : 'py-5 text-xl text-gray-800 hover:text-red-500 transition-all delay-150 border-b border-gray-300 cursor-pointer'
+              }
+            >
+              All Products
+            </li>
+          </Link>
           <Link to="/Contact">
             <li
               onClick={() => {
@@ -60,7 +62,7 @@ function HamBurger({ closeMenu }) {
               }}
               className={
                 contact
-                  ? 'py-5 text-xl text-red-500 transition-all delay-150 border-b border-gray-300 cursor-pointer'
+                  ? 'py-5 text-xl text-red-500 transition-all delay-100 border-b border-gray-300 cursor-pointer'
                   : 'py-5 text-xl text-gray-800 hover:text-red-500 transition-all delay-150 border-b border-gray-300 cursor-pointer'
               }
             >
@@ -78,13 +80,13 @@ function HamBurger({ closeMenu }) {
             }}
             className={
               about
-                ? 'py-5 text-xl text-red-500 transition-all delay-150 border-b border-gray-300 cursor-pointer'
+                ? 'py-5 text-xl text-red-500 transition-all delay-100 border-b border-gray-300 cursor-pointer'
                 : 'py-5 text-xl text-gray-800 hover:text-red-500 transition-all delay-150 border-b border-gray-300 cursor-pointer'
             }
           >
             About
           </li>
-          <Link to="/Login">
+          <Link to="/Signup">
             <li
               onClick={() => {
                 setAbout(false);
@@ -96,7 +98,7 @@ function HamBurger({ closeMenu }) {
               }}
               className={
                 account
-                  ? 'py-5 text-xl text-red-500 transition-all delay-150 border-b border-gray-300 cursor-pointer'
+                  ? 'py-5 text-xl text-red-500 transition-all delay-100 border-b border-gray-300 cursor-pointer'
                   : 'py-5 text-xl text-gray-800 hover:text-red-500 transition-all delay-150 border-b border-gray-300 cursor-pointer'
               }
             >

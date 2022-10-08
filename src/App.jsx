@@ -10,6 +10,12 @@ import CartPage from './CartPage';
 import Signup from './Signup';
 import Login from './Login';
 import ForgetPassword from './ForgetPassword';
+import Dashboard from './Dashboard';
+import { useEffect } from 'react';
+import axios from 'axios';
+import UserRoute from './UserRoute';
+import AuthRoute from './AuthRoute';
+import Loading from './Loading';
 let data = [];
 
 function App() {
@@ -18,7 +24,30 @@ function App() {
   let D = JSON.parse(localData);
 
   const [cart, setCart] = useState(D || {});
+  const [user, setUser] = useState();
+  const [loadingUser, setLoadingUser] = useState(true);
+  console.log(user);
   data = D;
+  const token = localStorage.getItem('token');
+  console.log(token);
+
+  useEffect(() => {
+    if (token) {
+      axios
+        .get('https://myeasykart.codeyogi.io/me', {
+          headers: {
+            Authorization: token,
+          },
+        })
+        .then((response) => {
+          setUser(response.data);
+          setLoadingUser(false);
+        });
+    } else {
+      setLoadingUser(false);
+    }
+    // eslint-disable-next-line
+  }, []);
 
   function handleAddtoCart(productId, count) {
     const oldCount = cart[productId] || 0;
@@ -33,13 +62,26 @@ function App() {
     return +previous + Number(cart[current]);
   }, 0);
 
+  if (loadingUser) {
+    return <Loading />;
+  }
+
   return (
     <div className="flex flex-col bg-gray-100">
       <Navbar quantity={totalCount} />
 
       <div className="grow">
         <Routes>
-          <Route index element={<ProductListPage />} />
+          <Route
+            index
+            path="/"
+            element={
+              <UserRoute user={user}>
+                <Dashboard user={user} setUser={setUser} />{' '}
+              </UserRoute>
+            }
+          ></Route>
+          <Route path="/productlist" element={<ProductListPage />} />
           <Route
             path="/products/:id/"
             element={<ProductDetail onAddToCart={handleAddtoCart} />}
@@ -50,8 +92,22 @@ function App() {
             path="/CartPage"
             element={<CartPage setCart={setCart} cart={data} />}
           />
-          <Route path="/Signup" element={<Signup />} />
-          <Route path="/Login" element={<Login />} />
+          <Route
+            path="/Signup"
+            element={
+              <AuthRoute user={user}>
+                <Signup user={user} setUser={setUser} />
+              </AuthRoute>
+            }
+          />
+          <Route
+            path="/Login"
+            element={
+              <AuthRoute user={user}>
+                <Login setUser={setUser} />
+              </AuthRoute>
+            }
+          />
           <Route path="/ForgetPassword" element={<ForgetPassword />} />
         </Routes>
       </div>
