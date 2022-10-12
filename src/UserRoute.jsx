@@ -1,11 +1,12 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
+import { withUser } from './withProvider';
 
-function UserRoute({ user, children }) {
+function UserRoute({ children, user }) {
   if (!user) {
     return <Navigate to="/login" />;
   }
   return children;
 }
 
-export default UserRoute;
+export default withUser(UserRoute);

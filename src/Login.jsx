@@ -6,8 +6,9 @@ import { HiOutlineMail } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import Input from './Input';
+import { withAlert, withUser } from './withProvider';
 
-function Login({ setUser }) {
+function Login({ setUser, setAlert }) {
   const schema = Yup.object().shape({
     email: Yup.string().email().required(),
     password: Yup.string().required().min(8).max(16),
@@ -39,9 +40,13 @@ function Login({ setUser }) {
         const { user, token } = response.data;
         localStorage.setItem('token', token);
         setUser(user);
+        setAlert(undefined);
       })
       .catch((error) => {
-        console.log(error);
+        setAlert({
+          type: 'error',
+          message: 'Invalid credentials',
+        });
       });
   }
 
@@ -117,7 +122,7 @@ function Login({ setUser }) {
                   <button
                     type="submit"
                     disabled={!isValid}
-                    className="px-10 py-2 text-center text-white transition-all bg-indigo-600 hover:-translate-y-0.5 active:translate-y-0.5  rounded-md disabled:bg-indigo-300 md:w-auto hover:bg-indigo-500 "
+                    className="px-10 py-2 shadow-md text-center text-white transition-all bg-indigo-600 hover:-translate-y-0.5 active:translate-y-0.5  rounded-md disabled:bg-indigo-300 md:w-auto hover:bg-indigo-500 "
                   >
                     Log-in
                   </button>
@@ -163,4 +168,4 @@ function Login({ setUser }) {
   );
 }
 
-export default memo(Login);
+export default withAlert(withUser(memo(Login)));

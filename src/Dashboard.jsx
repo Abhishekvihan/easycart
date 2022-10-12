@@ -1,7 +1,7 @@
 import React from 'react';
-// import { Navigate } from 'react-router-dom';
+import { withUser } from './withProvider';
 
-const Dashboard = ({ user, setUser }) => {
+const Dashboard = ({ setUser, user }) => {
   const handleLogout = () => {
     setUser(undefined);
     const token = localStorage.getItem('token');
@@ -25,4 +25,4 @@ const Dashboard = ({ user, setUser }) => {
   );
 };
 
-export default Dashboard;
+export default withUser(Dashboard);

@@ -9,7 +9,9 @@ import * as Yup from 'yup';
 import Input from './Input';
 import axios from 'axios';
 
-function Signup({ setUser }) {
+import { withUser } from './withProvider';
+
+function Signup({ setUser, setAlert }) {
   const schema = Yup.object().shape({
     email: Yup.string().email().required(),
     password: Yup.string().required().min(8).max(16),
@@ -45,9 +47,13 @@ function Signup({ setUser }) {
         const { user, token } = response.data;
         localStorage.setItem('token', token);
         setUser(user);
+        setAlert(undefined);
       })
       .catch((error) => {
-        console.log(error, 'invalid credetials');
+        setAlert({
+          type: 'error',
+          message: 'Invalid credentials',
+        });
       });
   }
   const [password, setpassword] = useState(true);
@@ -193,4 +199,4 @@ function Signup({ setUser }) {
   );
 }
 
-export default memo(Signup);
+export default withUser(memo(Signup));
