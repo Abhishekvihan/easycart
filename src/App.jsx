@@ -16,6 +16,8 @@ import axios from 'axios';
 import UserRoute from './UserRoute';
 import AuthRoute from './AuthRoute';
 import Loading from './Loading';
+import { AlertContext, UserContext } from './Contexts';
+import Alert from './Alert';
 let data = [];
 
 function App() {
@@ -26,10 +28,12 @@ function App() {
   const [cart, setCart] = useState(D || {});
   const [user, setUser] = useState();
   const [loadingUser, setLoadingUser] = useState(true);
-  console.log(user);
+  const [alert, setAlert] = useState();
+  const removeAlert = () => {
+    setAlert(undefined);
+  };
   data = D;
   const token = localStorage.getItem('token');
-  console.log(token);
 
   useEffect(() => {
     if (token) {
@@ -47,7 +51,7 @@ function App() {
       setLoadingUser(false);
     }
     // eslint-disable-next-line
-  }, []);
+  }, [token]);
 
   function handleAddtoCart(productId, count) {
     const oldCount = cart[productId] || 0;
@@ -68,50 +72,55 @@ function App() {
 
   return (
     <div className="flex flex-col bg-gray-100">
-      <Navbar quantity={totalCount} />
+      <UserContext.Provider value={{ user, setUser }}>
+        <AlertContext.Provider value={{ alert, setAlert, removeAlert }}>
+          <Navbar quantity={totalCount} />
+          <Alert />
 
-      <div className="grow">
-        <Routes>
-          <Route
-            index
-            path="/"
-            element={
-              <UserRoute user={user}>
-                <Dashboard user={user} setUser={setUser} />{' '}
-              </UserRoute>
-            }
-          ></Route>
-          <Route path="/productlist" element={<ProductListPage />} />
-          <Route
-            path="/products/:id/"
-            element={<ProductDetail onAddToCart={handleAddtoCart} />}
-          />
-          <Route path="*" element={<NoProduct />} />
-          <Route path="/Contact" element={<Contact />} />
-          <Route
-            path="/CartPage"
-            element={<CartPage setCart={setCart} cart={data} />}
-          />
-          <Route
-            path="/Signup"
-            element={
-              <AuthRoute user={user}>
-                <Signup user={user} setUser={setUser} />
-              </AuthRoute>
-            }
-          />
-          <Route
-            path="/Login"
-            element={
-              <AuthRoute user={user}>
-                <Login setUser={setUser} />
-              </AuthRoute>
-            }
-          />
-          <Route path="/ForgetPassword" element={<ForgetPassword />} />
-        </Routes>
-      </div>
-      <Footer />
+          <div className="grow">
+            <Routes>
+              <Route
+                index
+                path="/"
+                element={
+                  <UserRoute>
+                    <Dashboard />
+                  </UserRoute>
+                }
+              ></Route>
+              <Route path="/productlist" element={<ProductListPage />} />
+              <Route
+                path="/products/:id/"
+                element={<ProductDetail onAddToCart={handleAddtoCart} />}
+              />
+              <Route path="*" element={<NoProduct />} />
+              <Route path="/Contact" element={<Contact />} />
+              <Route
+                path="/CartPage"
+                element={<CartPage setCart={setCart} cart={data} />}
+              />
+              <Route
+                path="/Signup"
+                element={
+                  <AuthRoute>
+                    <Signup />
+                  </AuthRoute>
+                }
+              />
+              <Route
+                path="/Login"
+                element={
+                  <AuthRoute>
+                    <Login />
+                  </AuthRoute>
+                }
+              />
+              <Route path="/ForgetPassword" element={<ForgetPassword />} />
+            </Routes>
+          </div>
+          <Footer />
+        </AlertContext.Provider>
+      </UserContext.Provider>
     </div>
   );
 }
