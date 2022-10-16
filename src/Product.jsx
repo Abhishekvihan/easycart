@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 function Product({ title, price, category, thumbnail, id }) {
   return (
-    <div className="max-w-xs mt-4 mr-3 border border-gray-300 rounded-md shadow hover:shadow-xl lg:mr-0 aspect-square ">
+    <div className="w-64 mt-4 mr-3 border border-gray-300 rounded-md shadow lg:w-80 lg:h-110 h-96 hover:shadow-xl lg:mr-0 aspect-square ">
       <Link to={'/products/' + id}>
         <div className="w-64 h-64 lg:w-80 lg:h-80 ">
           <span>

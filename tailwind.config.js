@@ -6,6 +6,9 @@ module.exports = {
       width: {
         128: '32rem',
       },
+      spacing: {
+        110: '28rem',
+      },
       scale: {
         200: '2.00',
         250: '2.50',

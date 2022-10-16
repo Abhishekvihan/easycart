@@ -1,56 +1,64 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import ProductList from './ProductList';
 import { getProductList } from './api';
 import NoMatching from './NoMatching';
-import { HiArrowRight } from 'react-icons/hi';
 import Loading from './Loading';
 import NoProduct from './NoProduct';
+import { range } from 'lodash';
+import { BsArrowLeftShort, BsArrowRightShort } from 'react-icons/bs';
+import { Link, useSearchParams } from 'react-router-dom';
 
 function ProductListPage() {
-  const [query, setQuery] = useState('');
-  const [sort, setSort] = useState('default');
-  const [productList, setproductList] = useState([]);
-  const [active1, setActive1] = useState(true);
-  const [active2, setActive2] = useState();
-  const [active3, setActive3] = useState();
-  const [active4, setActive4] = useState();
-  useEffect(function () {
-    const list = getProductList();
-    list
-      .then((response) => {
-        setproductList(response.data.products);
-      })
-      .catch(() => {
-        return <NoProduct />;
-      });
-  }, []);
+  const [productList, setproductList] = useState({});
+  const [loading, setLoading] = useState(true);
+  //eslint-disable-next-line
+  let [searchParams, setSearchParams] = useSearchParams();
 
-  let data = productList.filter(function (item) {
-    const lowerCaseTitle = item.title.toLowerCase();
-    const lowerCaseQuery = query.toLowerCase();
-    return lowerCaseTitle.indexOf(lowerCaseQuery) !== -1;
-  });
+  const Params = Object.fromEntries([...searchParams]);
+  let { query, sort, page } = Params;
+  page = +page || 1;
 
-  if (sort === 'ascending price') {
-    data.sort(function (x, y) {
-      return x.price - y.price;
-    });
-  } else if (sort === 'descending price') {
-    data.sort(function (x, y) {
-      return y.price - x.price;
-    });
-  } else if (sort === 'name') {
-    data.sort(function (x, y) {
-      return x.title < y.title ? -1 : 1;
-    });
-  }
+  query = query || '';
+  sort = sort || 'default';
 
+  useEffect(
+    function () {
+      let sortBy;
+      let sortType;
+
+      if (sort === 'title') {
+        sortBy = 'title';
+      } else if (sort === 'lowToHigh') {
+        sortBy = 'price';
+      } else if (sort === 'highToLow') {
+        sortBy = 'price';
+        sortType = 'desc';
+      }
+      getProductList(sortBy, query, page, sortType)
+        .then((body) => {
+          setproductList(body);
+          setLoading(false);
+        })
+        .catch(() => {
+          setLoading(false);
+          return <NoProduct />;
+        });
+    },
+    [sort, query, page]
+  );
+
+  let data = productList.data;
   function handleQueryChange(event) {
-    setQuery(event.target.value);
+    setSearchParams(
+      { ...Params, query: event.target.value, page: 1 },
+      { replace: false }
+    );
   }
   function handleSortChange(event) {
-    setSort(event.target.value);
+    setSearchParams(
+      { ...Params, sort: event.target.value },
+      { replace: false }
+    );
   }
   if (productList.length === 0) {
     return (
@@ -58,6 +66,9 @@ function ProductListPage() {
         <Loading />
       </div>
     );
+  }
+  if (loading) {
+    return <Loading />;
   }
   return (
     <>
@@ -75,9 +86,9 @@ function ProductListPage() {
             className="w-48 px-3 py-2 text-gray-500 border border-gray-300 rounded-md outline-0"
           >
             <option value="default">Default sorting</option>
-            <option value="name">Sort by title</option>
-            <option value="ascending price">Sort by Price: low to high</option>
-            <option value="descending price">Sort by Price: high to low</option>
+            <option value="title">Sort by title</option>
+            <option value="lowToHigh">Sort by Price: low to high</option>
+            <option value="highToLow">Sort by Price: high to low</option>
           </select>
         </div>
       </div>
@@ -87,91 +98,49 @@ function ProductListPage() {
           <NoMatching />
         </div>
       )}
-      <div className="max-w-6xl py-20 mx-auto space-x-2">
-        <span
-          onClick={() => {
-            setActive1(true);
-            setActive3(false);
-            setActive2(false);
-            setActive4(false);
-            let next = axios.get(
-              'https://dummyjson.com/products?limit=30&skip=0&select=title,price,description,thumbnail'
-            );
-            next.then((res) => {
-              setproductList(res.data.products);
-            });
-          }}
-          className={
-            active1
-              ? 'p-4 border cursor-pointer border-gray-400 transition-all hover:bg-red-500 bg-red-500 hover:text-white'
-              : 'p-4 border border-gray-400 cursor-pointer transition-all bg-white hover:bg-red-500 hover:text-white'
+      {productList.meta.current_page > 1 && (
+        <Link
+          to={
+            '?' +
+            new URLSearchParams({
+              ...Params,
+              page: productList.meta.current_page - 1,
+            })
           }
+          className="inline-block px-2 pt-3 pb-4 ml-2 -mb-4 text-xl transition-all bg-white border border-gray-400 cursor-pointer hover:bg-red-500 hover:text-white"
         >
-          1
-        </span>
-        <span
-          onClick={() => {
-            setActive1(false);
-            setActive3(false);
-            setActive2(true);
-            setActive4(false);
-            let next = axios.get(
-              'https://dummyjson.com/products?limit=30&skip=30&select=title,price,description,thumbnail'
-            );
-            next.then((res) => {
-              setproductList(res.data.products);
-            });
-          }}
-          className={
-            active2
-              ? 'p-4 border cursor-pointer border-gray-400 transition-all hover:bg-red-500 bg-red-500 hover:text-white'
-              : 'p-4 border border-gray-400 cursor-pointer transition-all bg-white hover:bg-red-500 hover:text-white'
-          }
-        >
-          2
-        </span>
-        <span
-          onClick={() => {
-            setActive1(false);
-            setActive3(true);
-            setActive2(false);
-            setActive4(false);
-            let next = axios.get(
-              'https://dummyjson.com/products?limit=30&skip=60&select=title,price,description,thumbnail'
-            );
-            next.then((res) => {
-              setproductList(res.data.products);
-            });
-          }}
-          className={
-            active3
-              ? 'p-4 border cursor-pointer border-gray-400 transition-all hover:bg-red-500 bg-red-500 hover:text-white'
-              : 'p-4 border border-gray-400 cursor-pointer transition-all bg-white hover:bg-red-500 hover:text-white'
-          }
-        >
-          3
-        </span>
-        <span
-          className={
-            active4
-              ? 'px-3 py-4 border cursor-pointer border-gray-400 transition-all hover:bg-red-500 bg-red-500 hover:text-white'
-              : 'px-3 py-4  border border-gray-400 cursor-pointer transition-all bg-white hover:bg-red-500 hover:text-white'
-          }
-          onClick={() => {
-            setActive1(false);
-            setActive3(false);
-            setActive2(false);
-            setActive4(true);
-            let next = axios.get(
-              'https://dummyjson.com/products?limit=10&skip=90&select=title,price,description,thumbnail'
-            );
-            next.then((res) => {
-              setproductList(res.data.products);
-            });
-          }}
-        >
-          <HiArrowRight className="inline" />
-        </span>
+          <BsArrowLeftShort />
+        </Link>
+      )}
+      {range(1, productList.meta.last_page + 1).map((item, i) => (
+        <div key={item} className="inline-block mb-2 ml-2">
+          <Link
+            to={'?' + new URLSearchParams({ ...Params, page: item })}
+            className={
+              page === i + 1
+                ? 'p-4 border   cursor-pointer mb-2  border-gray-400 transition-all hover:bg-red-500 bg-red-500 text-white'
+                : 'p-4 border  border-gray-400 cursor-pointer transition-all bg-white hover:bg-red-500 hover:text-white'
+            }
+          >
+            {item}
+          </Link>
+        </div>
+      ))}
+      <div className="inline">
+        {page < productList.meta.last_page && (
+          <Link
+            to={
+              '?' +
+              new URLSearchParams({
+                ...Params,
+                page: productList.meta.current_page + 1,
+              })
+            }
+            className="inline-block px-2 pt-3 pb-4 ml-2 -mb-4 text-xl transition-all bg-white border border-gray-400 cursor-pointer hover:bg-red-500 hover:text-white"
+          >
+            <BsArrowRightShort />
+          </Link>
+        )}
       </div>
     </>
   );
