@@ -11,13 +11,11 @@ import Signup from './Signup';
 import Login from './Login';
 import ForgetPassword from './ForgetPassword';
 import Dashboard from './Dashboard';
-import { useEffect } from 'react';
-import axios from 'axios';
 import UserRoute from './UserRoute';
 import AuthRoute from './AuthRoute';
-import Loading from './Loading';
-import { AlertContext, UserContext } from './Contexts';
 import Alert from './Alert';
+import UserProvider from './providers/UserProvider';
+import AlertProvider from './providers/AlertProvider';
 let data = [];
 
 function App() {
@@ -26,32 +24,8 @@ function App() {
   let D = JSON.parse(localData);
 
   const [cart, setCart] = useState(D || {});
-  const [user, setUser] = useState();
-  const [loadingUser, setLoadingUser] = useState(true);
-  const [alert, setAlert] = useState();
-  const removeAlert = () => {
-    setAlert(undefined);
-  };
-  data = D;
-  const token = localStorage.getItem('token');
 
-  useEffect(() => {
-    if (token) {
-      axios
-        .get('https://myeasykart.codeyogi.io/me', {
-          headers: {
-            Authorization: token,
-          },
-        })
-        .then((response) => {
-          setUser(response.data);
-          setLoadingUser(false);
-        });
-    } else {
-      setLoadingUser(false);
-    }
-    // eslint-disable-next-line
-  }, [token]);
+  data = D;
 
   function handleAddtoCart(productId, count) {
     const oldCount = cart[productId] || 0;
@@ -66,14 +40,10 @@ function App() {
     return +previous + Number(cart[current]);
   }, 0);
 
-  if (loadingUser) {
-    return <Loading />;
-  }
-
   return (
     <div className="flex flex-col bg-gray-100">
-      <UserContext.Provider value={{ user, setUser }}>
-        <AlertContext.Provider value={{ alert, setAlert, removeAlert }}>
+      <UserProvider>
+        <AlertProvider>
           <Navbar quantity={totalCount} />
           <Alert />
 
@@ -119,8 +89,8 @@ function App() {
             </Routes>
           </div>
           <Footer />
-        </AlertContext.Provider>
-      </UserContext.Provider>
+        </AlertProvider>
+      </UserProvider>
     </div>
   );
 }
