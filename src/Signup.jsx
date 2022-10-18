@@ -43,7 +43,6 @@ function Signup({ setUser, setAlert }) {
         password: values.password,
       })
       .then((response) => {
-        console.log(response.data);
         const { user, token } = response.data;
         localStorage.setItem('token', token);
         setUser(user);

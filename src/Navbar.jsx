@@ -6,22 +6,26 @@ import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
 import HamBurger from './HamBurger';
 import { memo } from 'react';
 import { HiOutlineHome } from 'react-icons/hi';
+import { withCart } from './withProvider';
 
-function Navbar({ quantity }) {
+function Navbar({ CartCount }) {
   const [menu, setMenu] = useState(false);
   function closeMenu(a) {
     if (a === true) {
       setMenu(false);
     }
   }
+  console.log(CartCount);
   return (
     <div className="py-5 bg-white border border-b-gray-400">
       <div className="flex items-center justify-between max-w-6xl mx-auto">
         <div>
-          <img
-            alt="try"
-            src="https://trycasuals.com/wp-content/uploads/2019/06/print-1-1.svg"
-          />
+          <Link to="/">
+            <img
+              alt="try"
+              src="https://trycasuals.com/wp-content/uploads/2019/06/print-1-1.svg"
+            />
+          </Link>
         </div>
         <div className="flex justify-between space-x-5">
           <div className="hidden space-x-5 md:flex">
@@ -45,7 +49,7 @@ function Navbar({ quantity }) {
             <Link to="/CartPage">
               <BsBag className="items-center inline text-3xl text-red-500 " />
 
-              <div className="absolute inset-2">{quantity}</div>
+              <div className="absolute inset-2">{+CartCount}</div>
             </Link>
           </div>
           <div className="relative flex text-2xl md:hidden">
@@ -75,4 +79,4 @@ function Navbar({ quantity }) {
   );
 }
 
-export default memo(Navbar);
+export default withCart(memo(Navbar));

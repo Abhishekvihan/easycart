@@ -9,8 +9,9 @@ import {
 } from 'react-icons/hi';
 import { getProductData } from './api';
 import NoProduct from './NoProduct';
+import { withCart } from './withProvider';
 
-function ProductDetail({ onAddToCart }) {
+function ProductDetail({ addtoCart }) {
   const id = +useParams().id;
   const [count, setCount] = useState(1);
   const [product, setProduct] = useState();
@@ -65,7 +66,7 @@ function ProductDetail({ onAddToCart }) {
                   type="number"
                 />
                 <button
-                  onClick={() => onAddToCart(+id, +count)}
+                  onClick={() => addtoCart(+id, +count)}
                   className="px-4 py-2 text-sm text-white bg-red-500 rounded-md shadow-lg hover:bg-red-400 md:px-6 md:text-xl"
                 >
                   ADD TO CART
@@ -103,4 +104,4 @@ function ProductDetail({ onAddToCart }) {
   );
 }
 
-export default ProductDetail;
+export default withCart(ProductDetail);

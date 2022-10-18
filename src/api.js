@@ -28,3 +28,44 @@ export const getProductData = (id) => {
     return r.data;
   });
 };
+
+export function getProductByIds(ids) {
+  const commaSeparatedIds = ids.join();
+  return axios
+    .get('https://myeasykart.codeyogi.io/products/bulk', {
+      params: {
+        ids: commaSeparatedIds,
+      },
+    })
+    .then(function (response) {
+      return response.data;
+    });
+}
+
+export function saveCart(cart) {
+  axios
+    .post(
+      'https://myeasykart.codeyogi.io/carts',
+      { data: cart },
+      {
+        headers: {
+          Authorization: localStorage.getItem('token'),
+        },
+      }
+    )
+    .then((response) => {
+      return response.data;
+    });
+}
+
+export function getCart() {
+  return axios
+    .get('https://myeasykart.codeyogi.io/carts', {
+      headers: {
+        Authorization: localStorage.getItem('token'),
+      },
+    })
+    .then((response) => {
+      return response.data;
+    });
+}

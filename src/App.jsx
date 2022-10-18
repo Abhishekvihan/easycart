@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import ProductDetail from './ProductDetail';
@@ -16,80 +16,62 @@ import AuthRoute from './AuthRoute';
 import Alert from './Alert';
 import UserProvider from './providers/UserProvider';
 import AlertProvider from './providers/AlertProvider';
-let data = [];
+import CartProvider from './providers/CartProvider';
 
 function App() {
-  let localData;
-  localData = localStorage.getItem('cart');
-  let D = JSON.parse(localData);
-
-  const [cart, setCart] = useState(D || {});
-
-  data = D;
-
-  function handleAddtoCart(productId, count) {
-    const oldCount = cart[productId] || 0;
-    const newCart = { ...cart, [productId]: +oldCount + count };
-    setCart(newCart);
-
-    const cartString = JSON.stringify(newCart);
-    localStorage.setItem('cart', cartString);
-  }
-
-  const totalCount = Object.keys(cart).reduce(function (previous, current) {
-    return +previous + Number(cart[current]);
-  }, 0);
-
   return (
     <div className="flex flex-col bg-gray-100">
       <UserProvider>
-        <AlertProvider>
-          <Navbar quantity={totalCount} />
-          <Alert />
+        <CartProvider>
+          <AlertProvider>
+            <Navbar />
+            <Alert />
 
-          <div className="grow">
-            <Routes>
-              <Route
-                index
-                path="/"
-                element={
-                  <UserRoute>
-                    <Dashboard />
-                  </UserRoute>
-                }
-              ></Route>
-              <Route path="/productlist" element={<ProductListPage />} />
-              <Route
-                path="/products/:id/"
-                element={<ProductDetail onAddToCart={handleAddtoCart} />}
-              />
-              <Route path="*" element={<NoProduct />} />
-              <Route path="/Contact" element={<Contact />} />
-              <Route
-                path="/CartPage"
-                element={<CartPage setCart={setCart} cart={data} />}
-              />
-              <Route
-                path="/Signup"
-                element={
-                  <AuthRoute>
-                    <Signup />
-                  </AuthRoute>
-                }
-              />
-              <Route
-                path="/Login"
-                element={
-                  <AuthRoute>
-                    <Login />
-                  </AuthRoute>
-                }
-              />
-              <Route path="/ForgetPassword" element={<ForgetPassword />} />
-            </Routes>
-          </div>
-          <Footer />
-        </AlertProvider>
+            <div className="grow">
+              <Routes>
+                <Route
+                  path="/dashboard"
+                  element={
+                    <UserRoute>
+                      <Dashboard />
+                    </UserRoute>
+                  }
+                ></Route>
+                <Route
+                  index
+                  path="/"
+                  element={
+                    <UserRoute>
+                      <ProductListPage />
+                    </UserRoute>
+                  }
+                />
+                <Route path="/products/:id/" element={<ProductDetail />} />
+                <Route path="*" element={<NoProduct />} />
+                <Route path="/Contact" element={<Contact />} />
+                <Route path="/CartPage" element={<CartPage />} />
+                <Route
+                  path="/Signup"
+                  element={
+                    <AuthRoute>
+                      <Signup />
+                    </AuthRoute>
+                  }
+                />
+                <Route
+                  path="/Login"
+                  element={
+                    <AuthRoute>
+                      <Login />
+                    </AuthRoute>
+                  }
+                />
+                <Route path="/ForgetPassword" element={<ForgetPassword />} />
+              </Routes>
+            </div>
+            <Footer />
+          </AlertProvider>
+        </CartProvider>
       </UserProvider>
     </div>
   );

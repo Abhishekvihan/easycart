@@ -4,9 +4,7 @@ import { withUser } from './withProvider';
 const Dashboard = ({ setUser, user }) => {
   const handleLogout = () => {
     setUser(undefined);
-    const token = localStorage.getItem('token');
     localStorage.removeItem('token');
-    console.log(token);
   };
   return (
     <>

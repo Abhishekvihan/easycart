@@ -1,25 +1,22 @@
 // import axios from 'axios';
 import React, { memo, useEffect, useState } from 'react';
-import { getProductData } from './api';
+import { getProductByIds } from './api';
 import CartList from './CartList';
 import Loading from './Loading';
+import { withCart } from './withProvider';
 
-function CartPage({ cart, cartData, setCart }) {
+function CartPage({ cart, data, setCart }) {
   const [productList, setproductList] = useState([]);
 
   const [loading, setLoading] = useState(true);
-  const keys = Object.keys(cart);
+  const productIds = Object.keys(cart);
+
   useEffect(() => {
-    const promises = keys.map(function (productId) {
-      return getProductData(productId);
-    });
-    const badiPromise = Promise.all(promises);
-    badiPromise.then(function (response) {
-      setproductList(response);
+    getProductByIds(productIds).then(function (products) {
+      setproductList(products);
       setLoading(false);
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cart]);
+  }, [productIds]);
 
   if (loading) {
     return <Loading />;
@@ -31,7 +28,7 @@ function CartPage({ cart, cartData, setCart }) {
           products={productList}
           setCart={setCart}
           cart={cart}
-          cartData={cartData}
+          data={data}
           updateCart={setCart}
         />
       }
@@ -39,4 +36,4 @@ function CartPage({ cart, cartData, setCart }) {
   );
 }
 
-export default memo(CartPage);
+export default withCart(memo(CartPage));
