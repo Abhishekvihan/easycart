@@ -51,7 +51,7 @@ function Contact() {
             alt="fb-icon"
           />
         </a>
-        <a href="https://www.instagram.com/_something_ordinary/">
+        <a href="https://www.instagram.com/_this_is_a_v/">
           <img
             className="h-10 md:h-14"
             src="https://toppng.com/uploads/preview/new-black-instagram-logo-2020-11609370162ayxbdxlffo.png"

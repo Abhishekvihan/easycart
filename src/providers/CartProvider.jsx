@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { getCart, saveCart } from '../api';
 import { CartContext } from '../Contexts';
 import { withUser } from '../withProvider';
-let data = [];
+let data;
 
 function CartProvider({ user, children }) {
   const [cart, setCart] = useState({});
@@ -19,6 +19,7 @@ function CartProvider({ user, children }) {
         data = savedData;
       });
     }
+    //eslint-disable-next-line
   }, [user]);
   function addtoCart(productId, count) {
     const oldCount = cart[productId] || 0;
@@ -37,8 +38,8 @@ function CartProvider({ user, children }) {
   }
 
   const CartCount = Object.keys(cart).reduce(function (previous, current) {
-    console.log(cart[current], previous);
-    return +previous + Number(cart[current]);
+    console.log(previous, cart[current]);
+    return +previous + Number(+cart[current]);
   }, 0);
   console.log(CartCount);
 

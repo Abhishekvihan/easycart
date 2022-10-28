@@ -15,7 +15,6 @@ function Navbar({ CartCount }) {
       setMenu(false);
     }
   }
-  console.log(CartCount);
   return (
     <div className="py-5 bg-white border border-b-gray-400">
       <div className="flex items-center justify-between max-w-6xl mx-auto">

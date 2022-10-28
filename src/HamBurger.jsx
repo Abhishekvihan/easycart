@@ -1,8 +1,9 @@
 import React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { withUser } from './withProvider';
 
-function HamBurger({ closeMenu }) {
+function HamBurger({ closeMenu, setUser, user }) {
   const [home, setHome] = useState(true);
   const [allProducts, setAllProducts] = useState(false);
   const [contact, setContact] = useState(false);
@@ -105,10 +106,25 @@ function HamBurger({ closeMenu }) {
               Account
             </li>
           </Link>
+
+          {user && (
+            <li
+              onClick={() => {
+                closeMenu(true);
+                setUser(undefined);
+                localStorage.removeItem('token');
+              }}
+              className={
+                'py-5 text-xl text-gray-800 hover:text-red-500 transition-all delay-150 border-b border-gray-300 cursor-pointer'
+              }
+            >
+              Log-Out
+            </li>
+          )}
         </ul>
       </div>
     </>
   );
 }
 
-export default HamBurger;
+export default withUser(HamBurger);
